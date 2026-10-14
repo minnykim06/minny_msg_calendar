@@ -8,6 +8,11 @@ view, a "best time to talk" suggestion, and a countdown to your next visit.
 Built with Next.js (App Router) + TypeScript + Tailwind CSS, Supabase
 (Postgres + Auth + Realtime), and Luxon for DST-safe timezone math.
 
+**Live:** https://minny-msg-calendar.vercel.app — already deployed and
+connected to a live Supabase project with both accounts created. The setup
+steps below are for standing up a fresh instance elsewhere (e.g. if you fork
+this), not required to use the app as it's running now.
+
 ---
 
 ## 1. Prerequisites
