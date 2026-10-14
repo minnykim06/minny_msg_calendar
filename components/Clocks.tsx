@@ -3,14 +3,22 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
 import type { Profile } from "@/lib/types";
-import { COLORS, formatClockDate, formatClockTime, nowIn, statusLabel } from "@/lib/time";
+import {
+  COLORS,
+  formatClockDate,
+  formatClockTime,
+  formatSignedOffset,
+  nowIn,
+  offsetHoursBetween,
+  statusLabel,
+} from "@/lib/time";
 
 const CITY_LABEL: Record<string, string> = {
   "America/Los_Angeles": "San Diego",
   "Asia/Seoul": "Seoul",
 };
 
-function ClockCard({ profile }: { profile: Profile }) {
+function ClockCard({ profile, otherZone }: { profile: Profile; otherZone: string }) {
   const [dt, setDt] = useState<DateTime>(() => nowIn(profile.timezone));
 
   useEffect(() => {
@@ -21,22 +29,26 @@ function ClockCard({ profile }: { profile: Profile }) {
   const colors = COLORS[profile.display_name];
   const status = statusLabel(profile.display_name, profile.timezone);
   const city = CITY_LABEL[profile.timezone] ?? profile.timezone;
+  const offset = offsetHoursBetween(profile.timezone, otherZone);
 
   return (
-    <div
-      className="flex-1 rounded-xl2 p-4 shadow-cozy"
-      style={{ backgroundColor: colors.soft }}
-    >
-      <div className="text-xs font-medium uppercase tracking-wide" style={{ color: colors.text }}>
-        {profile.display_name} · {city}
+    <div className="flex-1 rounded-xl2 bg-paper shadow-cozy p-4 border border-hairline">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-xs font-medium uppercase tracking-wide text-foreground/55">
+          {profile.display_name} · {city}
+        </div>
+        <span
+          className="text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0"
+          style={{ backgroundColor: colors.soft, color: colors.text }}
+        >
+          {formatSignedOffset(offset)}
+        </span>
       </div>
-      <div className="text-3xl font-semibold mt-1" style={{ color: colors.text }}>
+      <div className="text-3xl font-semibold mt-1.5 tabular-nums" style={{ color: colors.text }}>
         {formatClockTime(dt)}
       </div>
-      <div className="text-xs mt-0.5" style={{ color: colors.text, opacity: 0.75 }}>
-        {formatClockDate(dt)}
-      </div>
-      <div className="text-xs mt-2 flex items-center gap-1" style={{ color: colors.text }}>
+      <div className="text-xs mt-0.5 text-foreground/45">{formatClockDate(dt)}</div>
+      <div className="text-xs mt-2 flex items-center gap-1 text-foreground/70">
         <span>{status.emoji}</span>
         <span>{status.text}</span>
       </div>
@@ -47,8 +59,8 @@ function ClockCard({ profile }: { profile: Profile }) {
 export default function Clocks({ me, partner }: { me: Profile; partner: Profile }) {
   return (
     <div className="flex gap-3">
-      <ClockCard profile={me} />
-      <ClockCard profile={partner} />
+      <ClockCard profile={me} otherZone={partner.timezone} />
+      <ClockCard profile={partner} otherZone={me.timezone} />
     </div>
   );
 }

@@ -93,7 +93,7 @@ export default function MyCalendarPage() {
   }
 
   if (loading || !me) {
-    return <div className="pt-20 text-center text-sm text-[#3A2E2A]/50">Loading…</div>;
+    return <div className="pt-20 text-center text-sm text-foreground/50">Loading…</div>;
   }
 
   const accent = COLORS[me.display_name].solid;
@@ -119,6 +119,7 @@ export default function MyCalendarPage() {
           onSubmit={handleCreate}
           onCancel={() => setShowForm(false)}
           submitLabel="Add event"
+          accentColor={accent}
         />
       )}
 
@@ -129,6 +130,7 @@ export default function MyCalendarPage() {
           onSubmit={handleUpdate}
           onCancel={() => setEditing(null)}
           submitLabel="Save changes"
+          accentColor={accent}
         />
       )}
 

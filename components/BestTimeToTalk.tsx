@@ -27,7 +27,7 @@ export default function BestTimeToTalk({
         <span>💬</span> Best times to talk
       </div>
       {windows.length === 0 ? (
-        <p className="text-sm text-[#3A2E2A]/50">
+        <p className="text-sm text-foreground/50">
           No shared awake, free windows found in the next few days — check each other&apos;s calendars.
         </p>
       ) : (
@@ -35,9 +35,9 @@ export default function BestTimeToTalk({
           {windows.map((w, i) => (
             <li
               key={i}
-              className="text-sm bg-cream rounded-lg px-3 py-2 text-[#3A2E2A]/80"
+              className="text-sm bg-cream rounded-lg px-3 py-2 text-foreground/80"
             >
-              {formatWindow(w, viewerZone)} <span className="text-[#3A2E2A]/40">(your time)</span>
+              {formatWindow(w, viewerZone)} <span className="text-foreground/40">(your time)</span>
             </li>
           ))}
         </ul>

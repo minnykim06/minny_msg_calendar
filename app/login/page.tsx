@@ -32,14 +32,14 @@ export default function LoginPage() {
     <div className="min-h-[80vh] flex flex-col items-center justify-center">
       <div className="text-5xl mb-3">🌙♡☀️</div>
       <h1 className="text-2xl font-semibold mb-1">minny &amp; msg</h1>
-      <p className="text-sm text-[#3A2E2A]/60 mb-8">San Diego ⟷ Seoul</p>
+      <p className="text-sm text-foreground/60 mb-8">San Diego ⟷ Seoul</p>
 
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm bg-paper rounded-xl2 shadow-cozy p-6 flex flex-col gap-4"
       >
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm text-[#3A2E2A]/70" htmlFor="email">
+          <label className="text-sm text-foreground/70" htmlFor="email">
             Email
           </label>
           <input
@@ -49,12 +49,12 @@ export default function LoginPage() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-lg border border-black/10 px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-minny/40"
+            className="rounded-lg border border-hairline px-3 py-2.5 bg-surfaceAlt focus:outline-none focus:ring-2 focus:ring-accent/40"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm text-[#3A2E2A]/70" htmlFor="password">
+          <label className="text-sm text-foreground/70" htmlFor="password">
             Password
           </label>
           <input
@@ -64,7 +64,7 @@ export default function LoginPage() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="rounded-lg border border-black/10 px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-minny/40"
+            className="rounded-lg border border-hairline px-3 py-2.5 bg-surfaceAlt focus:outline-none focus:ring-2 focus:ring-accent/40"
           />
         </div>
 
@@ -73,13 +73,13 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg bg-minny text-white py-2.5 font-medium disabled:opacity-60 transition-opacity"
+          className="rounded-lg bg-accent text-white py-2.5 font-medium disabled:opacity-60 transition-opacity"
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>
       </form>
 
-      <p className="text-xs text-[#3A2E2A]/40 mt-6 text-center max-w-sm px-6">
+      <p className="text-xs text-foreground/40 mt-6 text-center max-w-sm px-6">
         This app is just for the two of us — accounts are created ahead of
         time, there&apos;s no public sign-up.
       </p>

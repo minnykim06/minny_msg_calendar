@@ -26,7 +26,7 @@ export default function EventList({
   onDelete?: (event: EventRow) => void;
 }) {
   if (events.length === 0) {
-    return <p className="text-sm text-[#3A2E2A]/50 text-center py-6">Nothing scheduled.</p>;
+    return <p className="text-sm text-foreground/50 text-center py-6">Nothing scheduled.</p>;
   }
 
   const sorted = [...events].sort(
@@ -49,25 +49,25 @@ export default function EventList({
               <span>{CATEGORY_EMOJI[event.category] ?? ""}</span>
               <span className="truncate">{event.title}</span>
             </div>
-            <div className="text-xs text-[#3A2E2A]/55 mt-0.5">
+            <div className="text-xs text-foreground/55 mt-0.5">
               {formatEventRange(event.start_utc, event.end_utc, zone)}
             </div>
             {event.note && (
-              <div className="text-xs text-[#3A2E2A]/70 mt-1">{event.note}</div>
+              <div className="text-xs text-foreground/70 mt-1">{event.note}</div>
             )}
           </div>
           {editable && (
             <div className="flex gap-1 shrink-0">
               <button
                 onClick={() => onEdit?.(event)}
-                className="text-xs px-2 py-1 rounded-md hover:bg-black/5"
+                className="text-xs px-2 py-1 rounded-md hover:bg-white/5"
                 aria-label="Edit"
               >
                 ✎
               </button>
               <button
                 onClick={() => onDelete?.(event)}
-                className="text-xs px-2 py-1 rounded-md hover:bg-black/5"
+                className="text-xs px-2 py-1 rounded-md hover:bg-white/5"
                 aria-label="Delete"
               >
                 🗑

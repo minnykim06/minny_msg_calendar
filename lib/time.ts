@@ -7,14 +7,28 @@ export const ZONES: Record<DisplayName, string> = {
 };
 
 export const COLORS: Record<DisplayName, { solid: string; soft: string; text: string }> = {
-  minny: { solid: "#E8846B", soft: "#FBE4DC", text: "#9A3E25" }, // warm coral
-  msg: { solid: "#6E8FD1", soft: "#E3EAF8", text: "#2E4C8A" }, // soft blue
+  minny: { solid: "#5B8DD9", soft: "rgba(91,141,217,0.18)", text: "#9CC3F2" }, // San Diego blue
+  msg: { solid: "#EC6A94", soft: "rgba(236,106,148,0.18)", text: "#F5A3C2" }, // Seoul pink
 };
+
+export const SLEEP_COLOR = { solid: "#6B5B95", soft: "rgba(107,91,149,0.35)", text: "#B9ACDA" };
 
 export const OTHER: Record<DisplayName, DisplayName> = {
   minny: "msg",
   msg: "minny",
 };
+
+/** Hours person `a` is ahead of person `b` right now (signed), from real IANA offsets. */
+export function offsetHoursBetween(zoneA: string, zoneB: string): number {
+  const now = DateTime.utc();
+  const offsetA = now.setZone(zoneA).offset; // minutes
+  const offsetB = now.setZone(zoneB).offset;
+  return Math.round((offsetA - offsetB) / 60);
+}
+
+export function formatSignedOffset(hours: number): string {
+  return `${hours >= 0 ? "+" : ""}${hours}hrs`;
+}
 
 export function nowIn(zone: string): DateTime {
   return DateTime.now().setZone(zone);

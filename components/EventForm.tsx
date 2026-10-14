@@ -18,12 +18,14 @@ export default function EventForm({
   onSubmit,
   onCancel,
   submitLabel = "Save",
+  accentColor = "#D9A441",
 }: {
   zone: string;
   initial?: EventRow;
   onSubmit: (values: EventFormValues) => Promise<void> | void;
   onCancel: () => void;
   submitLabel?: string;
+  accentColor?: string;
 }) {
   const [title, setTitle] = useState(initial?.title ?? "");
   const [start, setStart] = useState(
@@ -56,42 +58,42 @@ export default function EventForm({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3 bg-paper rounded-xl2 shadow-cozy p-4">
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-[#3A2E2A]/60">Title</label>
+        <label className="text-xs text-foreground/60">Title</label>
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="rounded-lg border border-black/10 px-3 py-2 bg-white text-sm"
+          className="rounded-lg border border-hairline px-3 py-2 bg-surfaceAlt text-sm"
           placeholder="e.g. Study group"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-[#3A2E2A]/60">Start ({zone.split("/")[1]?.replace("_", " ")})</label>
+          <label className="text-xs text-foreground/60">Start ({zone.split("/")[1]?.replace("_", " ")})</label>
           <input
             type="datetime-local"
             value={start}
             onChange={(e) => setStart(e.target.value)}
-            className="rounded-lg border border-black/10 px-3 py-2 bg-white text-sm"
+            className="rounded-lg border border-hairline px-3 py-2 bg-surfaceAlt text-sm"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-[#3A2E2A]/60">End</label>
+          <label className="text-xs text-foreground/60">End</label>
           <input
             type="datetime-local"
             value={end}
             onChange={(e) => setEnd(e.target.value)}
-            className="rounded-lg border border-black/10 px-3 py-2 bg-white text-sm"
+            className="rounded-lg border border-hairline px-3 py-2 bg-surfaceAlt text-sm"
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-[#3A2E2A]/60">Category</label>
+        <label className="text-xs text-foreground/60">Category</label>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value as Category)}
-          className="rounded-lg border border-black/10 px-3 py-2 bg-white text-sm"
+          className="rounded-lg border border-hairline px-3 py-2 bg-surfaceAlt text-sm"
         >
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>
@@ -102,12 +104,12 @@ export default function EventForm({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-[#3A2E2A]/60">Note (optional)</label>
+        <label className="text-xs text-foreground/60">Note (optional)</label>
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
           rows={2}
-          className="rounded-lg border border-black/10 px-3 py-2 bg-white text-sm resize-none"
+          className="rounded-lg border border-hairline px-3 py-2 bg-surfaceAlt text-sm resize-none"
         />
       </div>
 
@@ -117,14 +119,15 @@ export default function EventForm({
         <button
           type="submit"
           disabled={saving}
-          className="flex-1 rounded-lg bg-minny text-white py-2.5 text-sm font-medium disabled:opacity-60"
+          style={{ backgroundColor: accentColor }}
+          className="flex-1 rounded-lg text-white py-2.5 text-sm font-medium disabled:opacity-60"
         >
           {saving ? "Saving…" : submitLabel}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-lg border border-black/10 px-4 py-2.5 text-sm"
+          className="rounded-lg border border-hairline px-4 py-2.5 text-sm"
         >
           Cancel
         </button>

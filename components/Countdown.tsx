@@ -25,8 +25,8 @@ export default function Countdown({
     return (
       <div className="rounded-xl2 bg-paper shadow-cozy p-5 text-center">
         <div className="text-2xl mb-1">🧳</div>
-        <p className="text-sm text-[#3A2E2A]/60 mb-3">No visit planned yet.</p>
-        <Link href="/settings" className="text-sm text-minny-text font-medium underline">
+        <p className="text-sm text-foreground/60 mb-3">No visit planned yet.</p>
+        <Link href="/settings" className="text-sm text-accent-text font-medium underline">
           Set the next visit date
         </Link>
       </div>
@@ -35,9 +35,9 @@ export default function Countdown({
 
   if (parts.isPast) {
     return (
-      <div className="rounded-xl2 bg-minny-soft shadow-cozy p-5 text-center">
+      <div className="rounded-xl2 bg-accent-soft shadow-cozy p-5 text-center">
         <div className="text-2xl mb-1">💞</div>
-        <p className="text-sm text-minny-text font-medium">
+        <p className="text-sm text-accent-text font-medium">
           You&apos;re together (or the date has passed) — update it in settings.
         </p>
       </div>
@@ -46,7 +46,7 @@ export default function Countdown({
 
   return (
     <div className="rounded-xl2 bg-paper shadow-cozy p-5">
-      <div className="text-xs uppercase tracking-wide text-[#3A2E2A]/50 text-center mb-2">
+      <div className="text-xs uppercase tracking-wide text-foreground/50 text-center mb-2">
         Until we&apos;re together again
       </div>
       <div className="flex justify-center gap-3">
@@ -57,10 +57,10 @@ export default function Countdown({
           { label: "sec", value: parts.seconds },
         ].map((unit) => (
           <div key={unit.label} className="flex flex-col items-center min-w-[3.25rem]">
-            <span className="text-2xl font-semibold text-minny-text tabular-nums">
+            <span className="text-2xl font-semibold text-accent-text tabular-nums">
               {unit.value}
             </span>
-            <span className="text-[10px] uppercase text-[#3A2E2A]/40">{unit.label}</span>
+            <span className="text-[10px] uppercase text-foreground/40">{unit.label}</span>
           </div>
         ))}
       </div>

@@ -3,9 +3,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { DateTime } from "luxon";
 import { createClient } from "@/lib/supabase/client";
-import { COLORS } from "@/lib/time";
-import type { EventRow, Profile } from "@/lib/types";
-import WeekView from "@/components/WeekView";
+import { COLORS, SLEEP_COLOR } from "@/lib/time";
+import type { DisplayName, EventRow, Profile } from "@/lib/types";
+import Timetable from "@/components/Timetable";
+
+const KOR_ZONE = "Asia/Seoul";
+
+function startOfSundayWeek(dt: DateTime): DateTime {
+  return dt.startOf("day").minus({ days: dt.weekday % 7 });
+}
 
 export default function CalendarPage() {
   const supabase = createClient();
@@ -14,7 +20,8 @@ export default function CalendarPage() {
   const [events, setEvents] = useState<EventRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [weekOffset, setWeekOffset] = useState(0);
-  const [viewMine, setViewMine] = useState(true);
+  const [visible, setVisible] = useState<Record<DisplayName, boolean>>({ minny: true, msg: true });
+  const [showSleep, setShowSleep] = useState(true);
 
   const loadEvents = useCallback(async (ids: string[]) => {
     const from = DateTime.utc().minus({ days: 10 }).toISO()!;
@@ -58,52 +65,56 @@ export default function CalendarPage() {
   }, [me, partner, supabase, loadEvents]);
 
   if (loading || !me || !partner) {
-    return <div className="pt-20 text-center text-sm text-[#3A2E2A]/50">Loading…</div>;
+    return <div className="pt-20 text-center text-sm text-foreground/50">Loading…</div>;
   }
 
-  const viewZone = viewMine ? me.timezone : partner.timezone;
-  const weekStart = DateTime.now().setZone(viewZone).startOf("week").plus({ weeks: weekOffset });
+  const weekStartKor = startOfSundayWeek(DateTime.now().setZone(KOR_ZONE)).plus({ weeks: weekOffset });
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-lg font-semibold">Together this week</h1>
+      <h1 className="text-lg font-semibold">KOR ⟷ SAN Timetable</h1>
 
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex gap-1.5 text-xs">
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.minny.solid }} />
-            minny
-          </span>
-          <span className="flex items-center gap-1 ml-2">
-            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.msg.solid }} />
-            msg
-          </span>
-        </div>
-
-        <div className="flex rounded-full bg-black/5 p-0.5 text-xs">
-          <button
-            onClick={() => setViewMine(true)}
-            className={`px-2.5 py-1 rounded-full ${viewMine ? "bg-paper shadow-sm font-medium" : "text-[#3A2E2A]/50"}`}
-          >
-            My time
-          </button>
-          <button
-            onClick={() => setViewMine(false)}
-            className={`px-2.5 py-1 rounded-full ${!viewMine ? "bg-paper shadow-sm font-medium" : "text-[#3A2E2A]/50"}`}
-          >
-            {partner.display_name}&apos;s time
-          </button>
-        </div>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+        <label className="flex items-center gap-1.5">
+          <input
+            type="checkbox"
+            checked={visible.minny}
+            onChange={(e) => setVisible((v) => ({ ...v, minny: e.target.checked }))}
+            className="accent-minny"
+          />
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.minny.solid }} />
+          minny
+        </label>
+        <label className="flex items-center gap-1.5">
+          <input
+            type="checkbox"
+            checked={visible.msg}
+            onChange={(e) => setVisible((v) => ({ ...v, msg: e.target.checked }))}
+            className="accent-msg"
+          />
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.msg.solid }} />
+          msg
+        </label>
+        <label className="flex items-center gap-1.5">
+          <input
+            type="checkbox"
+            checked={showSleep}
+            onChange={(e) => setShowSleep(e.target.checked)}
+            className="accent-sleep"
+          />
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: SLEEP_COLOR.solid }} />
+          sleep
+        </label>
       </div>
 
       <div className="flex items-center justify-between text-sm">
-        <button onClick={() => setWeekOffset((w) => w - 1)} className="px-2 py-1 text-[#3A2E2A]/60">
+        <button onClick={() => setWeekOffset((w) => w - 1)} className="px-2 py-1 text-foreground/60">
           ‹ Prev
         </button>
-        <span className="text-xs text-[#3A2E2A]/50">
-          {weekStart.toFormat("LLL d")} – {weekStart.plus({ days: 6 }).toFormat("LLL d")}
+        <span className="text-xs text-foreground/50">
+          {weekStartKor.toFormat("LLL d")} – {weekStartKor.plus({ days: 6 }).toFormat("LLL d")} (KOR)
         </span>
-        <button onClick={() => setWeekOffset((w) => w + 1)} className="px-2 py-1 text-[#3A2E2A]/60">
+        <button onClick={() => setWeekOffset((w) => w + 1)} className="px-2 py-1 text-foreground/60">
           Next ›
         </button>
       </div>
@@ -116,7 +127,14 @@ export default function CalendarPage() {
         </button>
       )}
 
-      <WeekView me={me} partner={partner} events={events} viewZone={viewZone} weekStart={weekStart} />
+      <Timetable
+        me={me}
+        partner={partner}
+        events={events}
+        weekStartKor={weekStartKor}
+        visible={visible}
+        showSleep={showSleep}
+      />
     </div>
   );
 }

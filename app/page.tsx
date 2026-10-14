@@ -10,7 +10,7 @@ export default async function HomePage() {
   const ctx = await getViewerContext();
   if (!ctx) {
     return (
-      <div className="pt-20 text-center text-sm text-[#3A2E2A]/60">
+      <div className="pt-20 text-center text-sm text-foreground/60">
         Couldn&apos;t load your profile. Make sure your account has a row in{" "}
         <code>profiles</code>.
       </div>
